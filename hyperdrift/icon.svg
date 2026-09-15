@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="128" height="128" viewBox="0 0 128 128">
+  <defs>
+    <linearGradient id="g" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#26f7ff"/>
+      <stop offset="0.55" stop-color="#a24bff"/>
+      <stop offset="1" stop-color="#ff2d8f"/>
+    </linearGradient>
+    <filter id="b" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur stdDeviation="3"/>
+    </filter>
+  </defs>
+  <rect width="128" height="128" rx="24" fill="#07031a"/>
+  <g filter="url(#b)" opacity="0.85">
+    <path d="M64 16 L104 104 L64 84 L24 104 Z" fill="url(#g)"/>
+  </g>
+  <path d="M64 16 L104 104 L64 84 L24 104 Z" fill="url(#g)"/>
+  <path d="M64 40 L64 78" stroke="#ffffff" stroke-width="5" stroke-linecap="round" opacity="0.9"/>
+  <g stroke="#26f7ff" stroke-width="3" opacity="0.8">
+    <path d="M10 114 H118"/>
+    <path d="M22 122 H106"/>
+  </g>
+</svg>
