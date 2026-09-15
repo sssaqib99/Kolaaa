@@ -1,0 +1,137 @@
+[gd_scene load_steps=13 format=3]
+
+[ext_resource type="Script" path="res://scripts/main.gd" id="1_main"]
+[ext_resource type="Shader" path="res://shaders/sky.gdshader" id="2_sky"]
+[ext_resource type="Shader" path="res://shaders/post.gdshader" id="3_post"]
+[ext_resource type="Script" path="res://scripts/track.gd" id="4_track"]
+[ext_resource type="PackedScene" path="res://scenes/player.tscn" id="5_player"]
+[ext_resource type="Script" path="res://scripts/camera_rig.gd" id="6_cam"]
+[ext_resource type="Script" path="res://scripts/hud.gd" id="7_hud"]
+[ext_resource type="PackedScene" path="res://scenes/helicopter.tscn" id="9_heli"]
+
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_sky"]
+shader = ExtResource("2_sky")
+shader_parameter/zenith_color = Color(0.015, 0.005, 0.06, 1)
+shader_parameter/horizon_color = Color(0.42, 0.04, 0.42, 1)
+shader_parameter/ground_color = Color(0.008, 0.004, 0.025, 1)
+shader_parameter/sun_color = Color(1, 0.32, 0.62, 1)
+shader_parameter/sun_core = Color(1, 0.85, 0.45, 1)
+shader_parameter/star_density = 0.986
+shader_parameter/intensity = 1.0
+
+[sub_resource type="Sky" id="Sky_main"]
+sky_material = SubResource("ShaderMaterial_sky")
+
+[sub_resource type="Environment" id="Environment_main"]
+background_mode = 2
+sky = SubResource("Sky_main")
+ambient_light_source = 2
+ambient_light_color = Color(0.32, 0.24, 0.55, 1)
+ambient_light_energy = 0.5
+tonemap_mode = 3
+tonemap_exposure = 1.05
+tonemap_white = 2.2
+ssao_enabled = true
+ssao_radius = 2.5
+ssao_intensity = 1.6
+ssao_power = 1.8
+glow_enabled = true
+glow_levels/2 = 0.4
+glow_levels/3 = 1.0
+glow_levels/4 = 0.7
+glow_levels/5 = 1.0
+glow_levels/6 = 0.45
+glow_normalized = true
+glow_intensity = 1.15
+glow_strength = 1.05
+glow_bloom = 0.28
+glow_blend_mode = 1
+glow_hdr_threshold = 0.82
+glow_hdr_scale = 2.2
+fog_enabled = true
+fog_light_color = Color(0.2, 0.045, 0.36, 1)
+fog_light_energy = 1.0
+fog_sun_scatter = 0.35
+fog_density = 0.0125
+fog_aerial_perspective = 0.45
+fog_height = 45.0
+fog_height_density = 0.02
+volumetric_fog_enabled = true
+volumetric_fog_density = 0.012
+volumetric_fog_albedo = Color(0.55, 0.4, 0.9, 1)
+volumetric_fog_emission = Color(0.07, 0.02, 0.16, 1)
+volumetric_fog_emission_energy = 0.6
+volumetric_fog_length = 180.0
+adjustment_enabled = true
+adjustment_brightness = 1.02
+adjustment_contrast = 1.12
+adjustment_saturation = 1.22
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_post"]
+shader = ExtResource("3_post")
+shader_parameter/aberration = 0.0
+shader_parameter/warp = 0.0
+shader_parameter/vignette_amount = 0.42
+shader_parameter/flash = 0.0
+shader_parameter/flash_color = Color(1, 0.12, 0.3, 1)
+shader_parameter/scanline = 0.035
+shader_parameter/grain = 0.022
+shader_parameter/desaturate = 0.0
+
+
+[node name="Main" type="Node3D"]
+script = ExtResource("1_main")
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_main")
+
+[node name="KeyLight" type="DirectionalLight3D" parent="."]
+position = Vector3(0, 24, 0)
+rotation_degrees = Vector3(-48, 148, 0)
+light_color = Color(0.78, 0.72, 1, 1)
+light_energy = 0.95
+light_specular = 0.8
+shadow_enabled = true
+directional_shadow_max_distance = 160.0
+
+[node name="FillLight" type="DirectionalLight3D" parent="."]
+position = Vector3(0, 14, 0)
+rotation_degrees = Vector3(-18, -30, 0)
+light_color = Color(1, 0.35, 0.72, 1)
+light_energy = 0.35
+shadow_enabled = false
+
+[node name="Track" type="Node3D" parent="."]
+script = ExtResource("4_track")
+
+[node name="Player" parent="." instance=ExtResource("5_player")]
+position = Vector3(0, 1.05, 0)
+
+[node name="CameraRig" type="Node3D" parent="."]
+position = Vector3(0, 4.2, 10)
+script = ExtResource("6_cam")
+
+[node name="Camera" type="Camera3D" parent="CameraRig"]
+fov = 74.0
+near = 0.08
+far = 900.0
+
+[node name="PostFX" type="CanvasLayer" parent="."]
+layer = 2
+
+[node name="Post" type="ColorRect" parent="PostFX"]
+material = SubResource("ShaderMaterial_post")
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+color = Color(1, 1, 1, 1)
+
+[node name="HUD" type="CanvasLayer" parent="."]
+layer = 3
+script = ExtResource("7_hud")
+[node name="Helicopter" parent="." instance=ExtResource("9_heli")]
+

@@ -1,0 +1,143 @@
+[gd_scene load_steps=14 format=3 uid="uid://byhvxqp7i2m4k"]
+
+[ext_resource type="Script" path="res://scripts/helicopter.gd" id="1_heli"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_body"]
+shading_mode = 0
+metallic = 0.6
+roughness = 0.35
+rim = 0.5
+rim_tint = 0.3
+emission_enabled = true
+emission = Color(0.82, 0.92, 1.0, 1)
+emission_energy_multiplier = 0.65
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_glass"]
+shading_mode = 0
+metallic = 0.0
+roughness = 0.18
+albedo_color = Color(0.16, 0.3, 0.55, 1)
+emission_enabled = true
+emission = Color(0.2, 0.55, 1.0, 1)
+emission_energy_multiplier = 0.42
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_rotor"]
+shading_mode = 0
+metallic = 0.5
+roughness = 0.4
+emission_enabled = true
+emission = Color(0.95, 1, 1, 1)
+emission_energy_multiplier = 0.3
+transparency = 1
+blend_mode = 1
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_dark"]
+shading_mode = 0
+metallic = 0.7
+roughness = 0.4
+emission_enabled = true
+emission = Color(0.06, 0.1, 0.22, 1)
+emission_energy_multiplier = 0.1
+
+[sub_resource type="BoxMesh" id="BoxMesh_body"]
+size = Vector3(4.4, 0.95, 1.85)
+
+[sub_resource type="BoxMesh" id="BoxMesh_canopy"]
+size = Vector3(1.7, 0.6, 1.55)
+
+[sub_resource type="BoxMesh" id="BoxMesh_tail"]
+size = Vector3(0.45, 0.55, 1.95)
+
+[sub_resource type="BoxMesh" id="BoxMesh_tailfin"]
+size = Vector3(0.06, 0.7, 0.95)
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_rotor"]
+top_radius = 3.2
+bottom_radius = 3.2
+height = 0.04
+radial_segments = 2
+rings = 1
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_skid"]
+top_radius = 0.12
+bottom_radius = 0.12
+height = 2.6
+radial_segments = 6
+rings = 1
+
+[sub_resource type="BoxMesh" id="BoxMesh_skid_bar"]
+size = Vector3(4.4, 0.16, 0.18)
+
+[sub_resource type="BoxMesh" id="BoxMesh_rotor_link"]
+size = Vector3(0.06, 0.06, 0.45)
+
+[node name="Helicopter" type="Node3D"]
+script = ExtResource("1_heli")
+visible = false
+
+[node name="Body" type="MeshInstance3D" parent="."]
+mesh = SubResource("BoxMesh_body")
+material_override = SubResource("StandardMaterial3D_body")
+
+[node name="Canopy" type="MeshInstance3D" parent="."]
+mesh = SubResource("BoxMesh_canopy")
+material_override = SubResource("StandardMaterial3D_glass")
+position = Vector3(0.2, 0.55, -0.55)
+rotation_degrees = Vector3(-12, 0, 0)
+
+[node name="TailBoom" type="MeshInstance3D" parent="."]
+mesh = SubResource("BoxMesh_tail")
+material_override = SubResource("StandardMaterial3D_body")
+position = Vector3(0, 0.05, 1.85)
+
+[node name="TailFin" type="MeshInstance3D" parent="."]
+mesh = SubResource("BoxMesh_tailfin")
+material_override = SubResource("StandardMaterial3D_body")
+position = Vector3(0, 0.45, 2.6)
+
+[node name="TailRotor" type="MeshInstance3D" parent="."]
+mesh = SubResource("CylinderMesh_rotor")
+material_override = SubResource("StandardMaterial3D_rotor")
+position = Vector3(0.32, 0.4, 2.7)
+rotation_degrees = Vector3(0, 0, 90)
+scale = Vector3(0.06, 1, 1)
+
+[node name="RotorHub" type="MeshInstance3D" parent="."]
+mesh = SubResource("CylinderMesh_rotor")
+material_override = SubResource("StandardMaterial3D_dark")
+position = Vector3(0, 1.42, -0.05)
+scale = Vector3(0.06, 1, 0.06)
+
+[node name="MainRotor" type="MeshInstance3D" parent="."]
+mesh = SubResource("CylinderMesh_rotor")
+material_override = SubResource("StandardMaterial3D_rotor")
+position = Vector3(0, 1.6, -0.05)
+scale = Vector3(1, 0.3, 0.06)
+
+[node name="RotorLink" type="MeshInstance3D" parent="."]
+mesh = SubResource("BoxMesh_rotor_link")
+material_override = SubResource("StandardMaterial3D_dark")
+position = Vector3(0, 1.6, 0.5)
+
+[node name="SkidL" type="MeshInstance3D" parent="."]
+mesh = SubResource("CylinderMesh_skid")
+material_override = SubResource("StandardMaterial3D_dark")
+position = Vector3(1.2, -0.6, 0)
+rotation_degrees = Vector3(90, 0, 0)
+
+[node name="SkidR" type="MeshInstance3D" parent="."]
+mesh = SubResource("CylinderMesh_skid")
+material_override = SubResource("StandardMaterial3D_dark")
+position = Vector3(-1.2, -0.6, 0)
+rotation_degrees = Vector3(90, 0, 0)
+
+[node name="SkidBar" type="MeshInstance3D" parent="."]
+mesh = SubResource("BoxMesh_skid_bar")
+material_override = SubResource("StandardMaterial3D_dark")
+position = Vector3(0, -0.55, 0.05)
+
+[node name="Beacon" type="MeshInstance3D" parent="."]
+mesh = SubResource("CylinderMesh_rotor")
+material_override = SubResource("StandardMaterial3D_rotor")
+position = Vector3(0, 1.78, -0.05)
+scale = Vector3(0.12, 1, 0.12)
