@@ -1,0 +1,4 @@
+# Dependencies / build output (web hangar preview)
+node_modules/
+dist/
+*.log
